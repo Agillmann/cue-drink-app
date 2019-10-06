@@ -1,10 +1,7 @@
 <template>
-  <div class="row">
-      <div class="col-lg-3 col-xs-12">
-        <card></card>
-      </div>
+  <div class="">
+    <card></card>
   </div>
- 
 </template>
 
 <script lang="ts">
