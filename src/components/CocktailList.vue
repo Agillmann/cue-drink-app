@@ -1,6 +1,7 @@
 <template>
   <div class="">
     <card></card>
+    <card></card>
   </div>
 </template>
 
