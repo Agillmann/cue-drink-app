@@ -2,12 +2,13 @@
   <article class="card">
       <header class="card__header" @click="showMore()">
         <img src="@/assets/logo.png" class="card__img"/>
-        <ul ref="card__list" :class="isActive ? 'card__list-is-active' : 'card__list-is-hidden'">
-          <li>ingredient 1</li>
-          <li>ingredient 2</li>
-          <li>ingredient 3</li>
-          <li>ingredient 4</li>
-          <li>ingredient 5</li>
+        
+        <ul ref="card__list" class="card__list" :class="isActive ? 'card__list-is-active' : 'card__list-is-hidden'">
+          <li :class="isActive ? 'card__list-is-active' : 'card__list-is-hidden'">ingredient 1</li>
+          <li :class="isActive ? 'card__list-is-active' : 'card__list-is-hidden'">ingredient 2</li>
+          <li :class="isActive ? 'card__list-is-active' : 'card__list-is-hidden'">ingredient 3</li>
+          <li :class="isActive ? 'card__list-is-active' : 'card__list-is-hidden'">ingredient 4</li>
+          <li :class="isActive ? 'card__list-is-active' : 'card__list-is-hidden'">ingredient 5</li>
         </ul>
       </header>
       <div class="card__body">
@@ -19,6 +20,7 @@
           <button href="#" class="card__footer-icon"><font-awesome-icon icon="thumbs-down" class="icon icon__td"/></button>
           <button href="#" class="card__footer-icon"><font-awesome-icon icon="star" class="icon icon__star"/></button>
         </footer>
+        <button @click="showMore()" class="button card__show" :class="isActive ? 'card__show-is-hidden' : 'card__show-is-active'">Show Recipe</button>
       </div>
   </article>
 </template>
@@ -49,7 +51,7 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
   .icon {
-    font-size: 2.8em;
+    font-size: 2.5em;
     color: rgba(244, 177, 19, 1);
   }
   .icon__tu{
@@ -77,46 +79,76 @@ export default Vue.extend({
   .card__body {
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
     padding: 15px 10px; 
+    transition: height 2s linear;
+  }
+  .card__header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
   }
   .card__title {
-    font-size: 2em;
+    font-size: 2.5em;
     font-weight: 700;
     margin: 0;
-    flex-grow: 1;
+    color: #1A1A1A;
+    flex-grow: 0;
     a {
       color:inherit;
       text-decoration: none;  
     }
   }
   .card__subtitle {
-    flex-grow: 1;
+    flex-grow: 0;
+    color: #1A1A1A;
     margin: 0
   }
   .card__footer {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-end;
     flex-grow: 2;
+  }
+  .card__footer-icon{
+    background-color: white;
+    border: none;
+  }
+
+  .card__list {
+    margin: 0;
+  }
+  .card__desc,
+  .card__list {
+    overflow: hidden;
+    transition: opacity 0.7s ease, height 1.5s ease-in-out;
+  }
+  .card__desc-is-active,
+  .card__list-is-active {
+    opacity: 1;
+    margin-bottom: 10px;
+    height: auto;
   }
   .card__desc-is-hidden,
   .card__list-is-hidden {
     opacity: 0;
-    height: 20px;
-    
+    height: 0;
   }
 
-  .card__desc-is-active,
-  .card__list-is-active {
-    overflow: hidden;
-    opacity: 1;
-    height: 100%;
+  .card__show {
+    cursor: pointer;
+    margin-top: 15px;
   }
-  .card__desc,
-  .card__list {
-    overflow-y: hidden;
-    transition: opacity 0.7s ease, height 1.5s ease-out;
+   .card__show-is-active {
+    opacity: 1;
+    height: 40px;
+    transition: opacity 0.3s ease, height 0.5s ease-in;
+  }
+   .card__show-is-hidden {
+    opacity: 0;
+    margin-top: 0px;
+    height: 0px;
+    transition: opacity 0.3s ease, height 0.5s ease-out;
   }
 
 </style>
