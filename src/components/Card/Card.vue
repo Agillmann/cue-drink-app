@@ -1,56 +1,68 @@
 <template>
   <article class="card">
-      <header class="card__header" @click="showMore()">
-        <img src="@/assets/logo.png" class="card__img"/>
-        
-        <ul ref="card__list" class="card__list" :class="isActive ? 'card__list-is-active' : 'card__list-is-hidden'">
-          <li :class="isActive ? 'card__list-is-active' : 'card__list-is-hidden'">ingredient 1</li>
-          <li :class="isActive ? 'card__list-is-active' : 'card__list-is-hidden'">ingredient 2</li>
-          <li :class="isActive ? 'card__list-is-active' : 'card__list-is-hidden'">ingredient 3</li>
-          <li :class="isActive ? 'card__list-is-active' : 'card__list-is-hidden'">ingredient 4</li>
-          <li :class="isActive ? 'card__list-is-active' : 'card__list-is-hidden'">ingredient 5</li>
-        </ul>
+      <header class="card__header">
+        <img @click="showMore()" :src="srcImg" class="card__img" />
+        <o ref="card__list" class="card__list" :class="isActive ? 'card__list-is-active' : 'card__list-is-hidden'">
+          <li 
+            v-for="ingredient in ingredients" 
+            :key="ingredient.id" 
+            :class="isActive ? 'card__list-is-active' : 'card__list-is-hidden'">{{ ingredient.name }}</li>
+        </o>
       </header>
       <div class="card__body">
-        <h2 class="card__title" @click="showMore()"><a href="#">Moscow Mule</a></h2>
-        <h3 class="card__subtitle">Gin</h3>
-        <p ref="card__desc" class="card__desc " :class="isActive ? 'card__desc-is-active' : 'card__desc-is-hidden'" @click="showMore()">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis voluptas veritatis iure deserunt reiciendis</p>
+        <h2 class="card__title" @click="showMore()">{{cocktailName}}</h2>
+        <!-- <h3 class="card__subtitle">Gin</h3> -->
+        <p ref="card__desc" class="card__desc " :class="isActive ? 'card__desc-is-active' : 'card__desc-is-hidden'">{{instruction}}</p>
         <footer class="card__footer">
-          <button href="#" class="card__footer-icon"><font-awesome-icon icon="thumbs-up" class="icon icon__tu"/></button>
-          <button href="#" class="card__footer-icon"><font-awesome-icon icon="thumbs-down" class="icon icon__td"/></button>
-          <button href="#" class="card__footer-icon"><font-awesome-icon icon="star" class="icon icon__star"/></button>
         </footer>
-        <button @click="showMore()" class="button card__show" :class="isActive ? 'card__show-is-hidden' : 'card__show-is-active'">Show Recipe</button>
+        <button @click="showMore()" class="button card__show">{{ isActive ? "X" : "Preparation"}}</button>
       </div>
   </article>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+
 export default Vue.extend({
   components: {
-   
+
   },
   name: 'Card',
   props: {
     msg: String,
+    cocktailName: String,
+    srcImg: String,
+    instruction: String,
+    ingredients: Array,
   },
   data(): {} {
     return {
       isActive: false,
+      isFetch: false,
+      data: [],
     };
   },
   watch: {},
-  computed: {},
+  computed: {
+
+  },
+
   methods: {
     showMore(): void {
       this.$data.isActive ? this.$data.isActive = false : this.$data.isActive = true;
     },
+
   },
+
 });
 </script>
 
 <style lang="scss" scoped>
+  .card__img {
+    @media screen and (max-width: 768px) {
+       max-width: 150px;
+    }
+  }
   .icon {
     font-size: 2.5em;
     color: rgba(244, 177, 19, 1);
@@ -81,7 +93,7 @@ export default Vue.extend({
   .card__body {
     display: flex;
     flex-direction: column;
-    padding: 15px 10px; 
+    padding: 15px 10px 10px 10px; 
     transition: height 2s linear;
   }
   .card__header {
@@ -99,6 +111,9 @@ export default Vue.extend({
     a {
       color:inherit;
       text-decoration: none;  
+    }
+    @media screen and (max-width: 768px) {
+      font-size: 1.3em;
     }
   }
   .card__subtitle {
@@ -119,11 +134,26 @@ export default Vue.extend({
 
   .card__list {
     margin: 0;
+    padding: 0px 10px; 
+    @media screen and (max-width: 768px) {
+      font-size: 0.7em;
+      padding: 0px;
+    }
+  }
+  .card__desc{
+    padding: 0px 10px;
+    @media screen and (max-width: 768px) {
+      font-size: 0.9em;
+      padding: 0px;
+    }
   }
   .card__desc,
   .card__list {
     overflow: hidden;
     transition: opacity 0.7s ease, height 1.5s ease-in-out;
+  }
+  .card__list-is-active {
+    padding: 10px 10px
   }
   .card__desc-is-active,
   .card__list-is-active {

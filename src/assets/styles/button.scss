@@ -5,8 +5,13 @@
   text-decoration: none;
   background-color: white;
   color: rgba(26, 26, 26, 1);
+  padding: 10px 0;
   &:hover{
     color: rgba(0, 26, 26, 0.5);
     border: 1px solid rgba(0, 26, 26, 0.5);
+  }
+  @media screen and (max-width: 768px) {
+    font-size: 1em;
+    
   }
 }
