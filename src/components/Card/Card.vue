@@ -46,6 +46,10 @@ export default Vue.extend({
     display: flex;
     justify-content: space-around;
     box-shadow: 0px 0px 20px rgba(0,0,0, 0.1);
+    transition: box-shadow 3ms;
+    &:hover {
+      box-shadow: 0px 0px 20px rgba(0,0,0, 0.3);
+    }
   }
   .card__body {
     display: flex;
