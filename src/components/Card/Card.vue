@@ -2,18 +2,18 @@
   <article class="card">
       <header class="card__header">
         <img @click="showMore()" :src="srcImg" class="card__img" />
-        <o ref="card__list" class="card__list" :class="isActive ? 'card__list-is-active' : 'card__list-is-hidden'">
+        <ul ref="card__list" class="card__list" :class="isActive ? 'card__list-is-active' : 'card__list-is-hidden'">
           <li 
             v-for="ingredient in ingredients" 
             :key="ingredient.id" 
             :class="isActive ? 'card__list-is-active' : 'card__list-is-hidden'">{{ ingredient.name }}</li>
-        </o>
+        </ul>
       </header>
       <div class="card__body">
         <h2 class="card__title" @click="showMore()">{{cocktailName}}</h2>
-        <!-- <h3 class="card__subtitle">Gin</h3> -->
         <p ref="card__desc" class="card__desc " :class="isActive ? 'card__desc-is-active' : 'card__desc-is-hidden'">{{instruction}}</p>
         <footer class="card__footer">
+          <div  class="icon" :class="isFavorite ? 'icon-star' : 'icon-star-alt'" @click="addFav()"></div>
         </footer>
         <button @click="showMore()" class="button card__show">{{ isActive ? "X" : "Preparation"}}</button>
       </div>
@@ -22,7 +22,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-
+import LocalStorage from '@/services/localStorage';
 export default Vue.extend({
   components: {
 
@@ -30,15 +30,18 @@ export default Vue.extend({
   name: 'Card',
   props: {
     msg: String,
+    _id: String,
     cocktailName: String,
     srcImg: String,
     instruction: String,
     ingredients: Array,
+    isFavorite: Boolean,
   },
   data(): {} {
     return {
       isActive: false,
       isFetch: false,
+      isFavorite: this.$props.isFavorite || false, 
       data: [],
     };
   },
@@ -51,28 +54,33 @@ export default Vue.extend({
     showMore(): void {
       this.$data.isActive ? this.$data.isActive = false : this.$data.isActive = true;
     },
-
+    addFav(): void {
+      this.$data.isFavorite = true;
+      const data = LocalStorage.getFromLocalStorage('favList')
+      const tmp = this.$props;
+      tmp.isFavorite = this.$data.isFavorite;
+      data.push(tmp)
+      
+      
+      console.log(data);
+      LocalStorage.setToLocalStorage(data, 'favList');
+    },
   },
 
 });
 </script>
 
 <style lang="scss" scoped>
+
+  
   .card__img {
     @media screen and (max-width: 768px) {
        max-width: 150px;
+       max-height: 150px;
+       height: 100%;
     }
   }
-  .icon {
-    font-size: 2.5em;
-    color: rgba(244, 177, 19, 1);
-  }
-  .icon__tu{
-    color: rgba(0, 174, 239, 1);
-  }
-  .icon__td{
-    color: rgba(206, 47, 47, 1);
-  }
+  
   .card {
     cursor: pointer;
     margin: 1em 0.5em;
@@ -93,14 +101,15 @@ export default Vue.extend({
   .card__body {
     display: flex;
     flex-direction: column;
-    padding: 15px 10px 10px 10px; 
+    padding: 10px 10px; 
     transition: height 2s linear;
   }
   .card__header {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: start;
     align-items: start;
+    flex-grow: 1;
   }
   .card__title {
     font-size: 2.5em;
@@ -123,21 +132,45 @@ export default Vue.extend({
   }
   .card__footer {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
+    justify-content: end;
+    align-items: end;
     flex-grow: 2;
   }
   .card__footer-icon{
     background-color: white;
     border: none;
   }
+  .icon {
+    align-self: end;
+    @media screen and (max-width: 768px) {
+      font-size: 1.3em;
+      width: 43px;
+      height: 43px;
+    }
+    width: 55px;
+    height: 55px;
+    background-size: cover;
+    color: rgba(244, 177, 19, 1); 
+  }
+  .icon-star {
+    background-image: url(https://res.cloudinary.com/bomzielab/image/upload/v1572101324/star_1_esx6ni.svg);
+  }
+  .icon-star-alt {
+    background-image: url(https://res.cloudinary.com/bomzielab/image/upload/v1572103191/star_4_pxwvov.svg);
+  }
+  
 
   .card__list {
     margin: 0;
     padding: 0px 10px; 
+    list-style:none;
     @media screen and (max-width: 768px) {
       font-size: 0.7em;
       padding: 0px;
+    }
+    li:before {
+      content: "🍹";
+      padding-right:5px;
     }
   }
   .card__desc{
@@ -153,7 +186,7 @@ export default Vue.extend({
     transition: opacity 0.7s ease, height 1.5s ease-in-out;
   }
   .card__list-is-active {
-    padding: 10px 10px
+    padding: 6px 6px
   }
   .card__desc-is-active,
   .card__list-is-active {
@@ -166,7 +199,9 @@ export default Vue.extend({
     opacity: 0;
     height: 0;
   }
-
+  .card__desc-is-hidden{
+    margin: 0;
+  }
   .card__show {
     cursor: pointer;
     margin-top: 15px;

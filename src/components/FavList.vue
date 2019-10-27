@@ -4,11 +4,11 @@
       <card 
         v-for="recipe in data" 
         :key="recipe._id" 
-        :cocktailName="recipe.name"
-        :srcImg="recipe.srcImg.url"
+        :cocktailName="recipe.cocktailName"
+        :srcImg="recipe.srcImg"
         :instruction="recipe.instruction"
         :ingredients="recipe.ingredients"
-        :_id="recipe._id"
+        :isFavorite="recipe.isFavorite"
       ></card>
     </div>
     
@@ -18,15 +18,15 @@
 <script lang="ts">
 import Vue from 'vue';
 import Card from '@/components/Card/Card.vue';
-import ApiService from '@/services/cocktailApi';
+import LocalStorage from '@/services/localStorage.ts';
 
 export default Vue.extend({
   components: {
     Card,
   },
-  name: 'CocktailList',
+  name: 'FavList',
   props: {
-    msg: String,
+    localFav: Array,
   },
   data(): {} {
     return {
@@ -36,13 +36,11 @@ export default Vue.extend({
   watch: {},
   computed: {},
   mounted() {
-    this.getRecipes();
+    this.$data.data = LocalStorage.getFromLocalStorage('favList');
+    console.log(this.$data.data);
   },
   methods: {
-    async getRecipes() {
-      const response = await ApiService.getRecipes();
-      this.$data.data = response.data;
-    },
+
   },
 });
 </script>
