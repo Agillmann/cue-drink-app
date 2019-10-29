@@ -41,7 +41,6 @@ export default Vue.extend({
     return {
       isActive: false,
       isFetch: false,
-      isFavorite: this.$props.isFavorite || false, 
       data: [],
     };
   },
@@ -56,14 +55,21 @@ export default Vue.extend({
     },
     addFav(): void {
       this.$data.isFavorite = true;
-      const data = LocalStorage.getFromLocalStorage('favList')
-      const tmp = this.$props;
-      tmp.isFavorite = this.$data.isFavorite;
-      data.push(tmp)
-      
-      
-      console.log(data);
-      LocalStorage.setToLocalStorage(data, 'favList');
+      const data = LocalStorage.getFromLocalStorage('favList');
+      const props = this.$props;
+      let alreadyFav = false;
+      data.forEach((d: any) => {
+        if (d._id === props._id) {
+          alreadyFav = true;
+        }
+      });
+      if (!alreadyFav) {
+        props.isFavorite = this.$data.isFavorite;
+        data.push(props);
+        // console.log(data);
+        LocalStorage.setToLocalStorage(data, 'favList');
+      }
+
     },
   },
 
@@ -107,8 +113,8 @@ export default Vue.extend({
   .card__header {
     display: flex;
     flex-direction: column;
-    justify-content: start;
-    align-items: start;
+    justify-content: flex-start;
+    align-items: flex-start;
     flex-grow: 1;
   }
   .card__title {
@@ -132,8 +138,8 @@ export default Vue.extend({
   }
   .card__footer {
     display: flex;
-    justify-content: end;
-    align-items: end;
+    justify-content: flex-start;
+    align-items: flex-start;
     flex-grow: 2;
   }
   .card__footer-icon{

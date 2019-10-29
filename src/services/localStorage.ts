@@ -1,5 +1,5 @@
 export default {
-  getFromLocalStorage(name: string) {
+  getFromLocalStorage(name: string): any {
     const savedLocal: string | null = localStorage.getItem(name);
     return savedLocal ? JSON.parse(savedLocal) : [];
   },

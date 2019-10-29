@@ -9,6 +9,7 @@
         :instruction="recipe.instruction"
         :ingredients="recipe.ingredients"
         :isFavorite="recipe.isFavorite"
+        :_id="recipe._id"
       ></card>
     </div>
     
@@ -37,7 +38,7 @@ export default Vue.extend({
   computed: {},
   mounted() {
     this.$data.data = LocalStorage.getFromLocalStorage('favList');
-    console.log(this.$data.data);
+    // console.log(this.$data.data);
   },
   methods: {
 

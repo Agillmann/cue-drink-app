@@ -2,12 +2,13 @@
   <div class="container">
     <div class="">
       <card 
-        v-for="recipe in data" 
+        v-for="recipe in data[0]" 
         :key="recipe._id" 
         :cocktailName="recipe.name"
         :srcImg="recipe.srcImg.url"
         :instruction="recipe.instruction"
         :ingredients="recipe.ingredients"
+        :isFavorite="recipe.isFavorite"
         :_id="recipe._id"
       ></card>
     </div>
@@ -19,6 +20,7 @@
 import Vue from 'vue';
 import Card from '@/components/Card/Card.vue';
 import ApiService from '@/services/cocktailApi';
+import { mapState, mapGetters } from 'vuex';
 
 export default Vue.extend({
   components: {
@@ -30,19 +32,17 @@ export default Vue.extend({
   },
   data(): {} {
     return {
-      data: [],
     };
   },
   watch: {},
-  computed: {},
-  mounted() {
-    this.getRecipes();
+  computed: {
+     ...mapState('cocktail', ['data']),
+     ...mapGetters('cocktail', ['alreadyFav']),
+  },
+  created() {
+    this.$store.dispatch('cocktail/fetchData');
   },
   methods: {
-    async getRecipes() {
-      const response = await ApiService.getRecipes();
-      this.$data.data = response.data;
-    },
   },
 });
 </script>
