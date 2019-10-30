@@ -4,7 +4,7 @@ export default {
     return savedLocal ? JSON.parse(savedLocal) : [];
   },
   setToLocalStorage(data: any, name: string) {
-    localStorage.setItem(
+    return localStorage.setItem(
       name,
       JSON.stringify(
         data,

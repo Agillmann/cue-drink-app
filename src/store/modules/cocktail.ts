@@ -9,32 +9,36 @@ const cocktail: Module<{favList: any, data: any }, any> = {
     data: [],
   },
   getters: {
-    alreadyFav(state): any {
-      state.data[0].forEach((d: any) => {
-        state.favList.forEach((el: any) => {
-          if (d._id === el._id) {
-            d.isFavorite = true;
-          }
-        });
-      });
-      return state.data;
-    },
   },
   mutations: {
     fetchData(state, payload: {data: any}) {
       state.data.push(payload.data);
     },
+    addFav(state, payload: {favList: any}) {
+      state.favList.push(payload.favList);
+    },
   },
   actions: {
     async fetchData(context, payload: { data: any }) {
-      context.commit('fetchData', await ApiService.getRecipes());
-      context.state.data[0].forEach((d: any) => {
+      let data: any = [];
+      context.state.data = [];
+      data = await ApiService.getRecipes();
+      console.log(data);
+      data.data.forEach((d: any) => {
         context.state.favList.forEach((el: any) => {
           if (d._id === el._id) {
             d.isFavorite = true;
           }
         });
       });
+      context.commit('fetchData', data);
+    },
+    addFav(context, payload: { favList: any }) {
+      LocalStorage.setToLocalStorage(payload.favList, 'favList');
+      context.commit('fetchData', LocalStorage.getFromLocalStorage('favList'));
+    },
+    updateFav(context, payload: { isFavorite: boolean }) {
+      context.commit('fetchData', payload.isFavorite);
     },
   },
 };

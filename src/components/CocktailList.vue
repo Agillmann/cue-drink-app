@@ -34,12 +34,13 @@ export default Vue.extend({
     return {
     };
   },
-  watch: {},
+  watch: {
+
+  },
   computed: {
      ...mapState('cocktail', ['data']),
-     ...mapGetters('cocktail', ['alreadyFav']),
   },
-  created() {
+  mounted() {
     this.$store.dispatch('cocktail/fetchData');
   },
   methods: {

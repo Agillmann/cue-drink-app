@@ -44,7 +44,12 @@ export default Vue.extend({
       data: [],
     };
   },
-  watch: {},
+  watch: {
+    isFavorite(){
+      console.log('change')
+      return this.isFavorite
+    }
+  },
   computed: {
 
   },
@@ -57,6 +62,7 @@ export default Vue.extend({
       this.$data.isFavorite = true;
       const data = LocalStorage.getFromLocalStorage('favList');
       const props = this.$props;
+      console.log('props1',props)
       let alreadyFav = false;
       data.forEach((d: any) => {
         if (d._id === props._id) {
@@ -64,10 +70,10 @@ export default Vue.extend({
         }
       });
       if (!alreadyFav) {
-        props.isFavorite = this.$data.isFavorite;
+        props.isFavorite = true
         data.push(props);
-        // console.log(data);
-        LocalStorage.setToLocalStorage(data, 'favList');
+        console.log(data);
+        this.$store.dispatch('cocktail/addFav', { favList: data });
       }
 
     },
@@ -75,153 +81,5 @@ export default Vue.extend({
 
 });
 </script>
-
 <style lang="scss" scoped>
-
-  
-  .card__img {
-    @media screen and (max-width: 768px) {
-       max-width: 150px;
-       max-height: 150px;
-       height: 100%;
-    }
-  }
-  
-  .card {
-    cursor: pointer;
-    margin: 1em 0.5em;
-    max-width: 550px;
-    display: flex;
-    justify-content: space-around;
-    box-shadow: 0px 0px 20px rgba(0,0,0, 0.1);
-
-    transition: box-shadow 300ms ease;
-    
-    &:hover {
-      box-shadow: 0px 0px 20px rgba(0,0,0, 0.3);
-    }
-    &:active {
-      box-shadow: 0px 0px 10px rgba(0,0,0, 0.1);
-    }
-  }
-  .card__body {
-    display: flex;
-    flex-direction: column;
-    padding: 10px 10px; 
-    transition: height 2s linear;
-  }
-  .card__header {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    flex-grow: 1;
-  }
-  .card__title {
-    font-size: 2.5em;
-    font-weight: 700;
-    margin: 0;
-    color: #1A1A1A;
-    flex-grow: 0;
-    a {
-      color:inherit;
-      text-decoration: none;  
-    }
-    @media screen and (max-width: 768px) {
-      font-size: 1.3em;
-    }
-  }
-  .card__subtitle {
-    flex-grow: 0;
-    color: #1A1A1A;
-    margin: 0
-  }
-  .card__footer {
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    flex-grow: 2;
-  }
-  .card__footer-icon{
-    background-color: white;
-    border: none;
-  }
-  .icon {
-    align-self: end;
-    @media screen and (max-width: 768px) {
-      font-size: 1.3em;
-      width: 43px;
-      height: 43px;
-    }
-    width: 55px;
-    height: 55px;
-    background-size: cover;
-    color: rgba(244, 177, 19, 1); 
-  }
-  .icon-star {
-    background-image: url(https://res.cloudinary.com/bomzielab/image/upload/v1572101324/star_1_esx6ni.svg);
-  }
-  .icon-star-alt {
-    background-image: url(https://res.cloudinary.com/bomzielab/image/upload/v1572103191/star_4_pxwvov.svg);
-  }
-  
-
-  .card__list {
-    margin: 0;
-    padding: 0px 10px; 
-    list-style:none;
-    @media screen and (max-width: 768px) {
-      font-size: 0.7em;
-      padding: 0px;
-    }
-    li:before {
-      content: "🍹";
-      padding-right:5px;
-    }
-  }
-  .card__desc{
-    padding: 0px 10px;
-    @media screen and (max-width: 768px) {
-      font-size: 0.9em;
-      padding: 0px;
-    }
-  }
-  .card__desc,
-  .card__list {
-    overflow: hidden;
-    transition: opacity 0.7s ease, height 1.5s ease-in-out;
-  }
-  .card__list-is-active {
-    padding: 6px 6px
-  }
-  .card__desc-is-active,
-  .card__list-is-active {
-    opacity: 1;
-    margin-bottom: 10px;
-    height: auto;
-  }
-  .card__desc-is-hidden,
-  .card__list-is-hidden {
-    opacity: 0;
-    height: 0;
-  }
-  .card__desc-is-hidden{
-    margin: 0;
-  }
-  .card__show {
-    cursor: pointer;
-    margin-top: 15px;
-  }
-   .card__show-is-active {
-    opacity: 1;
-    height: 40px;
-    transition: opacity 0.3s ease, height 0.5s ease-in;
-  }
-   .card__show-is-hidden {
-    opacity: 0;
-    margin-top: 0px;
-    height: 0px;
-    transition: opacity 0.3s ease, height 0.5s ease-out;
-  }
-
 </style>
