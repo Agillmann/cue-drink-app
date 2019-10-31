@@ -9,9 +9,6 @@ const cocktail: Module<{favList: any, data: any }, any> = {
     data: [],
   },
   getters: {
-    getData(){
-
-    }
   },
   mutations: {
     fetchData(state, payload: {data: any}) {
@@ -24,7 +21,7 @@ const cocktail: Module<{favList: any, data: any }, any> = {
   actions: {
     async fetchData(context, payload: { data: any }) {
       let data: any = [];
-      let favList = LocalStorage.getFromLocalStorage('favList');
+      const favList = LocalStorage.getFromLocalStorage('favList');
       context.state.data = [];
       data = await ApiService.getRecipes();
       data.data.forEach((d: any) => {
@@ -39,12 +36,12 @@ const cocktail: Module<{favList: any, data: any }, any> = {
       context.commit('fetchData', data);
     },
     addFav(context, payload: { favList: any , isFavorite: boolean}) {
-      let favList = LocalStorage.getFromLocalStorage('favList');
-      payload.favList['isFavorite'] = payload.isFavorite;
+      const favList = LocalStorage.getFromLocalStorage('favList');
+      payload.favList.isFavorite = payload.isFavorite;
       context.state.favList = [];
       favList.push(payload.favList);
       LocalStorage.setToLocalStorage(favList, 'favList');
-      context.commit('addFav',favList);
+      context.commit('addFav', favList);
     },
   },
 };

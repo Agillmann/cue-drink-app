@@ -40,7 +40,7 @@ export default Vue.extend({
     ...mapState('cocktail', ['favList']),
   },
   methods: {
-    
+
   },
 });
 </script>

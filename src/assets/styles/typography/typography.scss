@@ -1,10 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,700&display=swap');
-@font-face {
-  font-family: 'Norwerster';
-  src: url('/src/assets/styles/typography/norwester/norwester.otf') format('opentype');
-  font-weight: normal;
-  font-style: normal;
-}
+@import url('https://fonts.googleapis.com/css?family=Karla:400,700&display=swap');
 html{ 
    font-size: 1px;/*for using REM units*/
 }
@@ -19,7 +14,7 @@ body{
 }
 
 h1, h2, h3, h4, h5, h6 {
-   font-family: "Norwester";
+   font-family: "Karla";
    text-transform: uppercase;
    letter-spacing: 1px;
    color: $primary;
