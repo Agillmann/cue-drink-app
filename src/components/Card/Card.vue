@@ -13,7 +13,7 @@
         <h2 class="card__title" @click="showMore()">{{cocktailName}}</h2>
         <p ref="card__desc" class="card__desc " :class="isActive ? 'card__desc-is-active' : 'card__desc-is-hidden'">{{instruction}}</p>
         <footer class="card__footer">
-          <div  class="icon" :class="isFavorite ? 'icon-star' : 'icon-star-alt'" @click="addFav()"></div>
+          <div  class="icon" :class="isFavorite || isFav ? 'icon-star' : 'icon-star-alt'" @click="addFav()"></div>
         </footer>
         <button @click="showMore()" class="button card__show">{{ isActive ? "X" : "Preparation"}}</button>
       </div>
@@ -36,19 +36,16 @@ export default Vue.extend({
     instruction: String,
     ingredients: Array,
     isFavorite: Boolean,
+    data: Object,
   },
   data(): {} {
     return {
       isActive: false,
       isFetch: false,
-      data: [],
+      isFav: false,
     };
   },
   watch: {
-    isFavorite(){
-      console.log('change')
-      return this.isFavorite
-    }
   },
   computed: {
 
@@ -59,23 +56,9 @@ export default Vue.extend({
       this.$data.isActive ? this.$data.isActive = false : this.$data.isActive = true;
     },
     addFav(): void {
-      this.$data.isFavorite = true;
+      this.$data.isFav = true;
       const data = LocalStorage.getFromLocalStorage('favList');
-      const props = this.$props;
-      console.log('props1',props)
-      let alreadyFav = false;
-      data.forEach((d: any) => {
-        if (d._id === props._id) {
-          alreadyFav = true;
-        }
-      });
-      if (!alreadyFav) {
-        props.isFavorite = true
-        data.push(props);
-        console.log(data);
-        this.$store.dispatch('cocktail/addFav', { favList: data });
-      }
-
+      this.$store.dispatch('cocktail/addFav', { favList: this.data, isFavorite: true});
     },
   },
 

@@ -4,8 +4,8 @@
       <card 
         v-for="recipe in data" 
         :key="recipe._id" 
-        :cocktailName="recipe.cocktailName"
-        :srcImg="recipe.srcImg"
+        :cocktailName="recipe.name"
+        :srcImg="recipe.srcImg.url"
         :instruction="recipe.instruction"
         :ingredients="recipe.ingredients"
         :isFavorite="recipe.isFavorite"
@@ -20,6 +20,7 @@
 import Vue from 'vue';
 import Card from '@/components/Card/Card.vue';
 import LocalStorage from '@/services/localStorage.ts';
+import { mapState, mapGetters } from 'vuex';
 
 export default Vue.extend({
   components: {
@@ -31,17 +32,15 @@ export default Vue.extend({
   },
   data(): {} {
     return {
-      data: [],
+      data: LocalStorage.getFromLocalStorage('favList'),
     };
   },
   watch: {},
-  computed: {},
-  mounted() {
-    this.$data.data = LocalStorage.getFromLocalStorage('favList');
-    // console.log(this.$data.data);
+  computed: {
+    ...mapState('cocktail', ['favList']),
   },
   methods: {
-
+    
   },
 });
 </script>

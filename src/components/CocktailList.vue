@@ -10,6 +10,7 @@
         :ingredients="recipe.ingredients"
         :isFavorite="recipe.isFavorite"
         :_id="recipe._id"
+        :data="recipe"
       ></card>
     </div>
     
