@@ -13,7 +13,7 @@
         <h2 class="card__title" @click="showMore()">{{cocktailName}}</h2>
         <p ref="card__desc" class="card__desc " :class="isActive ? 'card__desc-is-active' : 'card__desc-is-hidden'">{{instruction}}</p>
         <footer class="card__footer">
-          <div  class="icon" :class="isFavorite || isFav ? 'icon-star' : 'icon-star-alt'" @click="addFav()"></div>
+          <div  class="icon" :class="isFav ? 'icon-star' : 'icon-star-alt'" @click="addFav()"></div>
         </footer>
         <button @click="showMore()" class="button card__show">{{ isActive ? "X" : "Preparation"}}</button>
       </div>
@@ -42,7 +42,7 @@ export default Vue.extend({
     return {
       isActive: false,
       isFetch: false,
-      isFav: false,
+      isFav: this.isFavorite ? true : false,
     };
   },
   watch: {
@@ -50,15 +50,19 @@ export default Vue.extend({
   computed: {
 
   },
-
   methods: {
     showMore(): void {
       this.$data.isActive ? this.$data.isActive = false : this.$data.isActive = true;
     },
     addFav(): void {
-      this.$data.isFav = true;
-      const data = LocalStorage.getFromLocalStorage('favList');
-      this.$store.dispatch('cocktail/addFav', { favList: this.data, isFavorite: true});
+      if (this.$data.isFav) {
+        this.$data.isFav = false;
+        this.$store.dispatch('cocktail/removeFav', { recipe: this.data, isFavorite: true});
+      } else {
+        this.$data.isFav = true;
+        this.$store.dispatch('cocktail/addFav', { recipe: this.data, isFavorite: true});
+      }
+
     },
   },
 

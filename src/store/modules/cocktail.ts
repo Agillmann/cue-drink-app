@@ -17,6 +17,9 @@ const cocktail: Module<{favList: any, data: any }, any> = {
     addFav(state, payload: {favList: any}) {
       state.favList.push(payload);
     },
+    removeFav(state, payload: {favList: any}) {
+      state.favList.push(payload);
+    },
   },
   actions: {
     async fetchData(context, payload: { data: any }) {
@@ -35,13 +38,25 @@ const cocktail: Module<{favList: any, data: any }, any> = {
       });
       context.commit('fetchData', data);
     },
-    addFav(context, payload: { favList: any , isFavorite: boolean}) {
+    addFav(context, payload: { recipe: any , isFavorite: boolean}) {
       const favList = LocalStorage.getFromLocalStorage('favList');
-      payload.favList.isFavorite = payload.isFavorite;
+      payload.recipe.isFavorite = payload.isFavorite;
       context.state.favList = [];
-      favList.push(payload.favList);
+      favList.push(payload.recipe);
       LocalStorage.setToLocalStorage(favList, 'favList');
       context.commit('addFav', favList);
+    },
+    removeFav(context, payload: { recipe: any }) {
+      const favList = LocalStorage.getFromLocalStorage('favList');
+      context.state.favList = [];
+      favList.forEach((fav: any, index: number) => {
+        if (fav._id === payload.recipe._id) {
+          delete favList[index];
+        }
+      });
+      const newFav = favList.filter((fav: any) => fav);
+      LocalStorage.setToLocalStorage(newFav, 'favList');
+      context.commit('removeFav', newFav);
     },
   },
 };

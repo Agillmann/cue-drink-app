@@ -3,7 +3,6 @@
     <header>
       <nav id="nav" class="navbar">
         <router-link to="/">Home</router-link>
-        <router-link to="/">Recherche</router-link>
         <router-link to="/favorie">Favoris</router-link>
       </nav>
     </header>

@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="">
+    <div v-if="data.length > 0">
       <card 
         v-for="recipe in data" 
         :key="recipe._id" 
@@ -10,9 +10,10 @@
         :ingredients="recipe.ingredients"
         :isFavorite="recipe.isFavorite"
         :_id="recipe._id"
+        :data="recipe"
       ></card>
     </div>
-    
+      <h3 v-else>Vous n'avez pas encore de favoris</h3>
   </div>
 </template>
 
@@ -32,12 +33,15 @@ export default Vue.extend({
   },
   data(): {} {
     return {
-      data: LocalStorage.getFromLocalStorage('favList'),
+      data: [],
     };
   },
   watch: {},
   computed: {
     ...mapState('cocktail', ['favList']),
+  },
+  mounted() {
+    this.$data.data = LocalStorage.getFromLocalStorage('favList');
   },
   methods: {
 
@@ -46,4 +50,8 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+h3 {
+  text-align: center;
+  margin-top: 80px;
+}
 </style>

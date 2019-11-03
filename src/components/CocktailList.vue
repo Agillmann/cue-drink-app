@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="">
+    <div v-if="data.length > 0">
       <card 
         v-for="recipe in data[0]" 
         :key="recipe._id" 
@@ -12,6 +12,9 @@
         :_id="recipe._id"
         :data="recipe"
       ></card>
+    </div>
+    <div v-else class="content_loading">
+      <div class="loading"></div>
     </div>
     
   </div>
@@ -50,4 +53,10 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+.content_loading{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 100px;
+}
 </style>
